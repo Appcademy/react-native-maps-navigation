@@ -124,6 +124,26 @@ export default class MapViewNavigation extends Component {
     }
 
     /**
+     * @componentDidMount
+     */
+    componentDidMount()
+    {
+        this.watchId = navigator.geolocation.watchPosition(position => {
+
+            this.setPosition(position.coords);
+
+        });
+    }
+
+    /**
+     * @componentWillUnmount
+     */
+    componentWillUnmount()
+    {
+        navigator.geolocation.clearWatch(this.watchId);
+    }
+
+    /**
      * @componentDidUpdate
      * @param prevProps
      * @param prevState
@@ -193,11 +213,9 @@ export default class MapViewNavigation extends Component {
      * @param coordinate
      * @param duration
      */
-    updatePosition(region, duration = 0)
+    updatePosition(coordinate, duration = 0)
     {
-	console.log("updatePosition", region)
-        this.props.map().animateToRegion(region);
-        this.props.map().animateToViewingAngle(this.props.navigationViewingAngle);
+        this.props.map().animateToCoordinate(coordinate, duration);
     }
 
     /**
@@ -255,7 +273,7 @@ export default class MapViewNavigation extends Component {
     {
         const {latitude, longitude, heading} = position;
 
-        position.coordinate = {latitude, longitude, ...this.getZoomValue(this.props.navigationZoomLevel)};
+        position.coordinate = {latitude, longitude};
 
         // process traps on setPosition
         this.traps.execute(position);
@@ -263,7 +281,7 @@ export default class MapViewNavigation extends Component {
         // update position on map
         if(this.state.navigationMode == NavigationModes.NAVIGATION) {
 
-            this.updatePosition(position.coordinate);
+            this.updatePosition(position);
 
             this.updateBearing(heading);
         }

@@ -56,7 +56,7 @@ export default class CloseButton extends Component {
         const styles = Styles(this.props);
 
         return (
-            <TouchableOpacity onPress={this.props.onPress}>
+            <TouchableOpacity>
                 <Text style={styles.closeButtonText}>
                     {NavigationIcons.close}
                 </Text>
