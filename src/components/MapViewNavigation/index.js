@@ -54,7 +54,8 @@ export default class MapViewNavigation extends Component {
         routeStepCourseTolerance: PropTypes.number,
         displayDebugMarkers: PropTypes.bool,
         simulate: PropTypes.bool,
-        options: PropTypes.object
+        options: PropTypes.object,
+        showMarker: PropTypes.bool
     }
 
     /**
@@ -85,6 +86,7 @@ export default class MapViewNavigation extends Component {
         routeStepCourseTolerance: 30, // in degress
         displayDebugMarkers: false,
         simulate: false,
+        showMarker: true,
         options: {}
     }
 
@@ -555,7 +557,7 @@ export default class MapViewNavigation extends Component {
         const result = [
             this.getRouteMarkers(this.state.route),
             this.getRoutePolylines(this.state.route),
-            this.getPositionMarker(this.state.position, this.state.navigationMode),
+            this.props.showMarker? this.getPositionMarker(this.state.position, this.state.navigationMode): null,
             this.getDebugShapes(this.state.route)
         ];
 
